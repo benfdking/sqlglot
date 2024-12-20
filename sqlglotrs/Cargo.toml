@@ -8,5 +8,8 @@ license = "MIT"
 name = "sqlglotrs"
 crate-type = ["cdylib"]
 
+[profile.release]
+debug = true
+
 [dependencies]
 pyo3 = "0.22.6"
