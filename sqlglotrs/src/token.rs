@@ -1,7 +1,7 @@
-use pyo3::{pyclass, IntoPy, Py, PyObject, Python};
+use crate::settings::TokenType;
 use pyo3::prelude::PyListMethods;
 use pyo3::types::{PyList, PyNone, PyString};
-use crate::settings::TokenType;
+use pyo3::{pyclass, IntoPy, Py, PyObject, Python};
 
 #[derive(Debug)]
 #[pyclass]
@@ -59,3 +59,4 @@ impl Token {
         let _ = std::mem::replace(comments, Vec::new());
     }
 }
+

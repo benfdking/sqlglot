@@ -1,8 +1,8 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use sqlglotrs::settings::{TokenTypeSettings, TokenizerDialectSettings, TokenizerSettings};
-use sqlglotrs::tokenizer::Tokenizer;
 #[cfg(unix)]
 use pprof::criterion::{Output, PProfProfiler};
+use sqlglotrs::settings::{TokenTypeSettings, TokenizerDialectSettings, TokenizerSettings};
+use sqlglotrs::tokenizer::Tokenizer;
 
 pub const LONG: &str = r#"
 SELECT
@@ -70,23 +70,20 @@ ORDER BY
 // }
 fn long(c: &mut Criterion) {
     // Read tokenizer settings
-    let settings_file = std::fs::read_to_string(
-        "/Users/benjaminking/Developer/sqlglot/.hacking/tokenizer_settings.json",
-    )
-    .unwrap();
+    let settings_file =
+        std::fs::read_to_string("/home/ben/Developer/sqlglot/.hacking/tokenizer_settings.json")
+            .unwrap();
     let tokenizer_settings = serde_json::from_str::<TokenizerSettings>(&settings_file).unwrap();
 
-    let settings_type_file = std::fs::read_to_string(
-        "/Users/benjaminking/Developer/sqlglot/.hacking/token_type_settings.json",
-    )
-    .unwrap();
+    let settings_type_file =
+        std::fs::read_to_string("/home/ben/Developer/sqlglot/.hacking/token_type_settings.json")
+            .unwrap();
     let settings_type_file =
         serde_json::from_str::<TokenTypeSettings>(&settings_type_file).unwrap();
 
-    let dialect_settings = std::fs::read_to_string(
-        "/Users/benjaminking/Developer/sqlglot/.hacking/dialect_settings.json",
-    )
-    .unwrap();
+    let dialect_settings =
+        std::fs::read_to_string("/home/ben/Developer/sqlglot/.hacking/dialect_settings.json")
+            .unwrap();
     let dialect_settings =
         serde_json::from_str::<TokenizerDialectSettings>(&dialect_settings).unwrap();
     let tokenizer = Tokenizer::new(tokenizer_settings, settings_type_file);
@@ -96,14 +93,14 @@ fn long(c: &mut Criterion) {
     });
 }
 
-#[cfg(unix)]
+// #[cfg(unix)]
 criterion_group! {
     name = benches;
     config = Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
     targets = long
 }
 
-#[cfg(not(unix))]
-criterion_group!(benches, fix);
+// #[cfg(not(unix))]
+// criterion_group!(benches, fix);
 
 criterion_main!(benches);

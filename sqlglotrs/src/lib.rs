@@ -1,12 +1,8 @@
-use pyo3::prelude::*;
-
 pub mod benchmark;
 pub mod settings;
+pub mod token;
 pub mod tokenizer;
 pub mod trie;
-pub mod token;
-
-
 
 // #[pymethods]
 // impl Token {

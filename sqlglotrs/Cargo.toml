@@ -17,11 +17,9 @@ harness = false
 default = ["profiling"]
 profiling = ["serde", "serde_json"]
 
-[profile.release]
-debug = true
-
 [dependencies]
 pyo3 = {version ="0.22.6", features = ["auto-initialize"]}
+rustc-hash = "2.1.0"
 
 # Optional dependencies used for profiling
 serde = { version = "1", features = ["derive"] , optional = true }
@@ -29,4 +27,5 @@ serde_json = { version = "1", optional = true }
 
 [dev-dependencies]
 criterion = "0.5"
+[target.'cfg(unix)'.dev-dependencies]
 pprof = { version = "0.14", features = ["flamegraph", "criterion"] }

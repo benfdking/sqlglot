@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use rustc_hash::FxHashMap as HashMap;
 
 #[derive(Debug)]
 pub struct TrieNode {
@@ -45,7 +45,7 @@ impl Trie {
         Trie {
             root: TrieNode {
                 is_word: false,
-                children: HashMap::new(),
+                children: HashMap::default(),
             },
         }
     }
@@ -59,7 +59,7 @@ impl Trie {
             for c in key.chars() {
                 current = current.children.entry(c).or_insert(TrieNode {
                     is_word: false,
-                    children: HashMap::new(),
+                    children: HashMap::default(),
                 });
             }
             current.is_word = true;
