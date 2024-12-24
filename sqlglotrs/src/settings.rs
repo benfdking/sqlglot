@@ -74,7 +74,7 @@ impl TokenTypeSettings {
         let json = serde_json::to_string(self).unwrap();
 
         // Write to file
-        std::fs::write(&path, &json).unwrap();
+        std::fs::write(path, &json).unwrap();
 
         Ok(json)
     }
@@ -198,7 +198,7 @@ impl TokenizerSettings {
         let json = serde_json::to_string(self).unwrap();
 
         // Write to file
-        std::fs::write(&path, &json).unwrap();
+        std::fs::write(path, &json).unwrap();
 
         Ok(json)
     }
@@ -241,7 +241,7 @@ impl TokenizerDialectSettings {
         let json = serde_json::to_string(self).unwrap();
 
         // Write to file
-        std::fs::write(&path, &json).unwrap();
+        std::fs::write(path, &json).unwrap();
 
         Ok(json)
     }
