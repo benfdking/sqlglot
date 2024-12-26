@@ -1,15 +1,13 @@
 use crate::settings::TokenType;
 use pyo3::prelude::PyListMethods;
-use pyo3::types::{PyList, PyNone, PyString};
-use pyo3::{pyclass, IntoPy, Py, PyObject, Python};
+use pyo3::types::{PyList, PyString};
+use pyo3::{pyclass, IntoPy, Py, Python};
 
 #[derive(Debug)]
 #[pyclass]
 pub struct Token {
     #[pyo3(get, name = "token_type_index")]
     pub token_type: TokenType,
-    #[pyo3(get, set, name = "token_type")]
-    pub token_type_py: PyObject,
     #[pyo3(get)]
     pub text: Py<PyString>,
     #[pyo3(get)]
@@ -36,7 +34,6 @@ impl Token {
     ) -> Token {
         Python::with_gil(|py| Token {
             token_type,
-            token_type_py: PyNone::get_bound(py).into_py(py),
             text: PyString::new_bound(py, &text).into_py(py),
             line,
             col,
