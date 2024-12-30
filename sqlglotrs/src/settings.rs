@@ -1,10 +1,12 @@
 use pyo3::prelude::*;
-use std::collections::{HashMap, HashSet};
+use rustc_hash::FxHashMap as HashMap;
+use rustc_hash::FxHashSet as HashSet;
 
 pub type TokenType = u16;
 
 #[derive(Clone, Debug)]
 #[pyclass]
+#[cfg_attr(feature = "profiling", derive(serde::Serialize, serde::Deserialize))]
 pub struct TokenTypeSettings {
     pub bit_string: TokenType,
     pub break_: TokenType,
@@ -41,7 +43,7 @@ impl TokenTypeSettings {
         heredoc_string_alternative: TokenType,
         hint: TokenType,
     ) -> Self {
-        TokenTypeSettings {
+        let token_type_settings = TokenTypeSettings {
             bit_string,
             break_,
             dcolon,
@@ -56,12 +58,31 @@ impl TokenTypeSettings {
             var,
             heredoc_string_alternative,
             hint,
-        }
+        };
+        token_type_settings
+            .write_json_to_string(
+                "/Users/benjaminking/Developer/sqlglot/.hacking/token_type_settings.json",
+            )
+            .unwrap();
+        token_type_settings
+    }
+}
+
+#[cfg(feature = "profiling")]
+impl TokenTypeSettings {
+    pub fn write_json_to_string(&self, path: &str) -> PyResult<String> {
+        let json = serde_json::to_string(self).unwrap();
+
+        // Write to file
+        std::fs::write(path, &json).unwrap();
+
+        Ok(json)
     }
 }
 
 #[derive(Clone, Debug)]
 #[pyclass]
+#[cfg_attr(feature = "profiling", derive(serde::Serialize, serde::Deserialize))]
 pub struct TokenizerSettings {
     pub white_space: HashMap<char, TokenType>,
     pub single_tokens: HashMap<char, TokenType>,
@@ -141,7 +162,7 @@ impl TokenizerSettings {
         let var_single_tokens_native: HashSet<char> =
             var_single_tokens.iter().map(&to_char).collect();
 
-        TokenizerSettings {
+        let tokenizer_settings = TokenizerSettings {
             white_space: white_space_native,
             single_tokens: single_tokens_native,
             keywords,
@@ -162,12 +183,30 @@ impl TokenizerSettings {
             string_escapes_allowed_in_raw_strings,
             nested_comments,
             hint_start,
-        }
+        };
+        tokenizer_settings
+            .write_json_to_string(
+                "/Users/benjaminking/Developer/sqlglot/.hacking/tokenizer_settings.json",
+            )
+            .unwrap();
+        tokenizer_settings
+    }
+}
+#[cfg(feature = "profiling")]
+impl TokenizerSettings {
+    pub fn write_json_to_string(&self, path: &str) -> PyResult<String> {
+        let json = serde_json::to_string(self).unwrap();
+
+        // Write to file
+        std::fs::write(path, &json).unwrap();
+
+        Ok(json)
     }
 }
 
 #[derive(Clone, Debug)]
 #[pyclass]
+#[cfg_attr(feature = "profiling", derive(serde::Serialize, serde::Deserialize))]
 pub struct TokenizerDialectSettings {
     pub unescaped_sequences: HashMap<String, String>,
     pub identifiers_can_start_with_digit: bool,
@@ -182,10 +221,28 @@ impl TokenizerDialectSettings {
         identifiers_can_start_with_digit: bool,
         numbers_can_be_underscore_separated: bool,
     ) -> Self {
-        TokenizerDialectSettings {
+        let settings = TokenizerDialectSettings {
             unescaped_sequences,
             identifiers_can_start_with_digit,
             numbers_can_be_underscore_separated,
-        }
+        };
+        settings
+            .write_json_to_string(
+                "/Users/benjaminking/Developer/sqlglot/.hacking/tokenizer_dialect_settings.json",
+            )
+            .unwrap();
+        settings
+    }
+}
+
+#[cfg(feature = "profiling")]
+impl TokenizerDialectSettings {
+    pub fn write_json_to_string(&self, path: &str) -> PyResult<String> {
+        let json = serde_json::to_string(self).unwrap();
+
+        // Write to file
+        std::fs::write(path, &json).unwrap();
+
+        Ok(json)
     }
 }

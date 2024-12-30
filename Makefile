@@ -40,3 +40,6 @@ docs:
 
 docs-serve:
 	python pdoc/cli.py --port 8002
+
+profile_rs: install-dev-rs-release
+	samply record python benchmarks/bench_rs_short.py
